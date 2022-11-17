@@ -39,11 +39,11 @@ export class App extends Component {
   addContact = ({ name, number }) => {
     const includeName = name => {
       return this.state.contacts.find(
-        elem => elem.name.toLocaleLowerCase() === name.toLocaleLowerCase()
+        e => e.name.toLocaleLowerCase() === name.toLocaleLowerCase()
       );
     };
     const includeNumber = number => {
-      return this.state.contacts.find(elem => elem.number === number);
+      return this.state.contacts.find(e => e.number === number);
     };
 
     const contact = {
@@ -78,10 +78,8 @@ export class App extends Component {
   filtredContacts = () => {
     const { contacts, filter } = this.state;
 
-    const toLowCaseFilter = filter.toLocaleLowerCase();
-
     return contacts.filter(cont =>
-      cont.name.toLowerCase().includes(toLowCaseFilter)
+      cont.name.toLowerCase().includes(filter.toLocaleLowerCase())
     );
   };
 
@@ -91,12 +89,14 @@ export class App extends Component {
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.addContact} />
         <h2>Contacts</h2>
-        <Filter value={this.filter} changeFilter={this.changeFilter} />
-        {}
-        <ContactList
+        
+        {this.state.contacts.length !== 0 ? <> <Filter value={this.filter} changeFilter={this.changeFilter} /> <ContactList
           contacts={this.filtredContacts()}
           deleteCont={this.deleteContact}
-        />
+        /></> : <div>
+            Your contacts are not here yet, but you can add contacts in the form above and save them in this app
+        </div>}
+        
       </Container>
     );
   }
